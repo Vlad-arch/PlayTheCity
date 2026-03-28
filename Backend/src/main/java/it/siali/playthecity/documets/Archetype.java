@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
 
-@Document(collection = "archetypes_registry")
+@Document(collection = "archetypes")
 @Data
 public class Archetype {
     @Id

@@ -7,8 +7,14 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record FoursquareResult(
-        @JsonProperty("fsq_id") String fsqId, // Mappa il nome strano del JSON alla variabile Java
+        @JsonProperty("fsq_place_id") // Deve mappare il nome esatto del JSON
+        String fsqPlaceId,
+
         String name,
-        List<FoursquareCategory> categories,
-        FoursquareGeocodes geocodes
+
+        // Le coordinate ora sono al primo livello!
+        double latitude,
+        double longitude,
+
+        List<FoursquareCategory> categories
 ) {}

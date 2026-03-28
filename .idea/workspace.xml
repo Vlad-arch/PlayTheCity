@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3bc5518a-e921-42d4-a76c-a28ae17bfd9b" name="Changes" comment="Servizio orchestratore">
+      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw.cmd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/PlaythecityApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/documets/ActivityHistory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/documets/Archetype.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/documets/Badge.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/documets/Demographics.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/documets/OnboardingQuiz.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/documets/UserProfile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/dto/CandidatePoi.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/dto/GeneratedItinerary.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/dto/ItineraryWaypoint.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/dto/foursquare/FoursquareCategory.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/dto/foursquare/FoursquareGeocodes.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/dto/foursquare/FoursquareMain.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/dto/foursquare/FoursquarePoi.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/dto/foursquare/FoursquareResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/dto/foursquare/FoursquareResult.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/dto/wikipedia/WikiGeoQuery.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/dto/wikipedia/WikiGeoResult.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/dto/wikipedia/WikiGeoSearchResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/dto/wikipedia/WikiQuery.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/dto/wikipedia/WikiSearchResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/dto/wikipedia/WikiSearchResult.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/dto/wikipedia/WikiSummaryResponse.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/dto/wikipedia/WikiThumbnail.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/model/OnboardingRequest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/model/PlayerProfile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/repository/ArchetypeRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/repository/UserProfileRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/service/FoursquareService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/service/GameOrchestratorService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/service/QuizService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/siali/playthecity/service/WikipediaBridgeService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/it/siali/playthecity/PlaythecityApplicationTests.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Record" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;sacconifranc&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Vlad-arch/PlayTheCity.git&quot;,
+    &quot;accountId&quot;: &quot;92933ace-5b1f-45d5-bcec-8ce7f2fc5781&quot;
+  }
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHomeTypeForPersistence" value="WRAPPER" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="3BZVUjnv1zeeB5vi1fIDDaDSsvH" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.PlayTheCity.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/fsacconi/Documents/Hackathon/PlayTheCity&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="it.siali.playthecity.dto.wikipedia" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="it.siali.playthecity.repository" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="PlayTheCity" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="it.siali.playthecity.PlaythecityApplication" />
+      <module name="playthecity" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3bc5518a-e921-42d4-a76c-a28ae17bfd9b" name="Changes" comment="" />
+      <created>1774696597225</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1774696597225</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Servizio Foursquare">
+      <option name="closed" value="true" />
+      <created>1774698959567</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1774698959567</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Servizio wiki">
+      <option name="closed" value="true" />
+      <created>1774699226542</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1774699226542</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Servizio orchestratore">
+      <option name="closed" value="true" />
+      <created>1774700964637</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1774700964637</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Servizio Foursquare" />
+    <MESSAGE value="Servizio wiki" />
+    <MESSAGE value="Servizio orchestratore" />
+    <option name="LAST_COMMIT_MESSAGE" value="Servizio orchestratore" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/it/siali/playthecity/controller/GameController.java</url>
+          <line>49</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/it/siali/playthecity/controller/GameController.java</url>
+          <line>44</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/it/siali/playthecity/service/AiCityGeneratorService.java</url>
+          <line>36</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/it/siali/playthecity/service/FoursquareService.java</url>
+          <line>30</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/it/siali/playthecity/controller/GameController.java</url>
+          <line>82</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

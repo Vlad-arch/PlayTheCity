@@ -4,6 +4,7 @@ import it.siali.playthecity.dto.foursquare.FoursquarePoi;
 import it.siali.playthecity.dto.foursquare.FoursquareResponse;
 import it.siali.playthecity.dto.foursquare.FoursquareResult;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import java.util.ArrayList;
@@ -15,9 +16,15 @@ public class FoursquareService {
     private final RestClient restClient;
 
     public FoursquareService(@Value("${foursquare.api.key}") String apiKey) {
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+        factory.setConnectTimeout(5000); // 5 secondi per connettersi a Foursquare
+        factory.setReadTimeout(15000);   // 10 secondi per aspettare la risposta (Risolve il Netty Timeout!)
+
         this.restClient = RestClient.builder()
-                .baseUrl("https://api.foursquare.com/v3")
-                .defaultHeader("Authorization", apiKey)
+                .requestFactory(factory)
+                .baseUrl("https://places-api.foursquare.com")
+                .defaultHeader("Authorization", "Bearer " + apiKey)
+                .defaultHeader("X-Places-Api-Version", " 2025-06-17")
                 .defaultHeader("Accept", "application/json")
                 .build();
     }
@@ -34,30 +41,28 @@ public class FoursquareService {
                             .queryParam("ll", coordinate)
                             .queryParam("radius", raggioMetri)
                             .queryParam("query", queryDalProfilo)
-                            .queryParam("limit", 20)
-                            .queryParam("fields", "fsq_id,name,categories,geocodes")
+                            .queryParam("limit", 10)
+                            .queryParam("fields", "fsq_place_id,name,categories,latitude,longitude")
                             .build())
                     .retrieve()
                     .body(FoursquareResponse.class); // <-- LA MAGIA È QUI
 
-            // Se la risposta è vuota, torniamo la lista vuota
             if (response == null || response.results() == null) {
                 return listaPoi;
             }
 
-            // Trasformiamo i dati grezzi di Foursquare nel nostro DTO pulito per l'LLM
             for (FoursquareResult result : response.results()) {
-
                 String categoria = "Luogo di interesse";
                 if (result.categories() != null && !result.categories().isEmpty()) {
                     categoria = result.categories().get(0).name();
                 }
 
-                double poiLat = result.geocodes().main().latitude();
-                double poiLon = result.geocodes().main().longitude();
+                // Usiamo direttamente le variabili flat
+                double poiLat = result.latitude();
+                double poiLon = result.longitude();
 
                 listaPoi.add(new FoursquarePoi(
-                        result.fsqId(),
+                        result.fsqPlaceId(), // Aggiornato il getter
                         result.name(),
                         categoria,
                         poiLat,
