@@ -1,8 +1,8 @@
 package it.siali.playthecity.service;
 
-import it.siali.playthecity.dto.Foursquare.FoursquarePoi;
-import it.siali.playthecity.dto.Foursquare.FoursquareResponse;
-import it.siali.playthecity.dto.Foursquare.FoursquareResult;
+import it.siali.playthecity.dto.foursquare.FoursquarePoi;
+import it.siali.playthecity.dto.foursquare.FoursquareResponse;
+import it.siali.playthecity.dto.foursquare.FoursquareResult;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;

@@ -1,4 +1,4 @@
-package it.siali.playthecity.dto.Foursquare;
+package it.siali.playthecity.dto.foursquare;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

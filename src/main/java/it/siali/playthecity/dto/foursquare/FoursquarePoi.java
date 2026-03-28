@@ -1,4 +1,4 @@
-package it.siali.playthecity.dto.Foursquare;
+package it.siali.playthecity.dto.foursquare;
 
 public record FoursquarePoi(
         String id,          // L'ID univoco di Foursquare (fsq_id)

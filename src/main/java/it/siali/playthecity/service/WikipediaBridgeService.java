@@ -1,6 +1,9 @@
+package it.siali.playthecity.service;
+
+import it.siali.playthecity.dto.wikipedia.WikiSearchResponse;
+import it.siali.playthecity.dto.wikipedia.WikiSummaryResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import com.fasterxml.jackson.databind.JsonNode;
 
 @Service
 public class WikipediaBridgeService {
@@ -9,26 +12,26 @@ public class WikipediaBridgeService {
     private final RestClient restClient;
 
     public WikipediaBridgeService() {
-        // Client per la ricerca
         this.actionClient = RestClient.builder()
                 .baseUrl("https://it.wikipedia.org/w/api.php")
-                .defaultHeader("User-Agent", "PlayTheCityHackathon/1.0")
+                .defaultHeader("User-Agent", "PlayTheCityHackathonBot/1.0 (test@example.com)")
                 .build();
 
-        // Client per scaricare il testo
         this.restClient = RestClient.builder()
                 .baseUrl("https://it.wikipedia.org/api/rest_v1")
-                .defaultHeader("User-Agent", "PlayTheCityHackathon/1.0")
+                .defaultHeader("User-Agent", "PlayTheCityHackathonBot/1.0 (test@example.com)")
                 .build();
     }
 
-    // Passagli il nome da Foursquare (es. "Caffè Greco") e la città (es. "Roma")
-    public String recuperaStoriaPerRAG(String nomeLuogoFoursquare, String citta) {
+    // Piccolo record interno per restituire sia il testo che l'immagine
+    public record StoriaWikiDTO(String testo, String imageUrl) {}
+
+    public StoriaWikiDTO recuperaStoriaPerRAG(String nomeLuogoFoursquare, String citta) {
         try {
             // 1. CERCA IL TITOLO ESATTO
             String queryRicerca = nomeLuogoFoursquare + " " + citta;
 
-            JsonNode searchResponse = actionClient.get()
+            WikiSearchResponse searchResponse = actionClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .queryParam("action", "query")
                             .queryParam("list", "search")
@@ -37,40 +40,44 @@ public class WikipediaBridgeService {
                             .queryParam("format", "json")
                             .build())
                     .retrieve()
-                    .body(JsonNode.class);
+                    .body(WikiSearchResponse.class); // Mappatura automatica!
 
-            JsonNode searchResults = searchResponse.path("query").path("search");
-
-            // Se Wikipedia non trova nulla (array vuoto), andiamo al fallback
-            if (searchResults.isEmpty()) {
+            // Controlli di sicurezza puliti
+            if (searchResponse == null || searchResponse.query() == null || searchResponse.query().search().isEmpty()) {
                 return modalitaFantasiaFallback(nomeLuogoFoursquare);
             }
 
-            // Prendi il titolo del primo risultato
-            String titoloUfficiale = searchResults.get(0).path("title").asText();
+            String titoloUfficiale = searchResponse.query().search().get(0).title();
 
-            // 2. SCARICA IL TESTO ESTRATTO
-            JsonNode summaryResponse = restClient.get()
+            // 2. SCARICA IL TESTO E L'IMMAGINE
+            WikiSummaryResponse summaryResponse = restClient.get()
                     .uri("/page/summary/{titolo}", titoloUfficiale)
                     .retrieve()
-                    .body(JsonNode.class);
+                    .body(WikiSummaryResponse.class); // Mappatura automatica!
 
-            // Controlla che non sia una pagina di disambiguazione
-            if ("disambiguation".equals(summaryResponse.path("type").asText())) {
+            if (summaryResponse == null || "disambiguation".equals(summaryResponse.type())) {
                 return modalitaFantasiaFallback(nomeLuogoFoursquare);
             }
 
-            return summaryResponse.path("extract").asText();
+            // Estraiamo l'immagine in modo sicuro (potrebbe essere null se la pagina Wiki non ha foto)
+            String imageUrl = null;
+            if (summaryResponse.thumbnail() != null) {
+                imageUrl = summaryResponse.thumbnail().source();
+            }
+
+            return new StoriaWikiDTO(summaryResponse.extract(), imageUrl);
 
         } catch (Exception e) {
-            // Se qualsiasi API va in timeout o errore, NON crashare l'app!
-            System.out.println("Errore Wiki per " + nomeLuogoFoursquare + ". Attivo fallback.");
+            System.err.println("Errore Wiki per " + nomeLuogoFoursquare + ": " + e.getMessage());
             return modalitaFantasiaFallback(nomeLuogoFoursquare);
         }
     }
 
-    // IL SALVAVITA DELL'HACKATHON
-    private String modalitaFantasiaFallback(String nomeLuogo) {
-        return "Nessun dato storico trovato per " + nomeLuogo + ". Genera una leggenda urbana inventata, intrigante e misteriosa su questo luogo, specificando al giocatore che si tratta di una diceria locale.";
+    // IL SALVAVITA
+    private StoriaWikiDTO modalitaFantasiaFallback(String nomeLuogo) {
+        String testoInventato = "Nessun dato storico ufficiale per " + nomeLuogo + ". Genera una leggenda urbana inventata, intrigante e misteriosa su questo luogo, specificando al giocatore che si tratta di una diceria locale.";
+        // Mettiamo un'immagine di default (es. un'icona misteriosa o un logo del vostro gioco) se manca Wiki
+        String defaultImage = "https://via.placeholder.com/400x300?text=Luogo+Misterioso";
+        return new StoriaWikiDTO(testoInventato, defaultImage);
     }
 }

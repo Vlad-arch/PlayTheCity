@@ -1,8 +1,8 @@
-package it.siali.playthecity.dto.Foursquare;
+package it.siali.playthecity.dto.wikipedia;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record FoursquareResponse(List<FoursquareResult> results) {}
+public record WikiQuery(List<WikiSearchResult> search) {}
