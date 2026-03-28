@@ -1,9 +1,14 @@
 package it.siali.playthecity.service;
 
+import it.siali.playthecity.dto.wikipedia.WikiGeoResult;
+import it.siali.playthecity.dto.wikipedia.WikiGeoSearchResponse;
 import it.siali.playthecity.dto.wikipedia.WikiSearchResponse;
 import it.siali.playthecity.dto.wikipedia.WikiSummaryResponse;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class WikipediaBridgeService {
@@ -79,5 +84,39 @@ public class WikipediaBridgeService {
         // Mettiamo un'immagine di default (es. un'icona misteriosa o un logo del vostro gioco) se manca Wiki
         String defaultImage = "https://via.placeholder.com/400x300?text=Luogo+Misterioso";
         return new StoriaWikiDTO(testoInventato, defaultImage);
+    }
+
+    public List<String> cercaMonumentiVicini(double lat, double lon, int raggioMetri) {
+        // L'API di Wiki accetta max 10.000 metri
+        int raggioSicuro = Math.min(raggioMetri, 10000);
+        String coordinate = lat + "|" + lon; // Wiki vuole il pipe "|" tra lat e lon
+
+        try {
+            WikiGeoSearchResponse response = actionClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .queryParam("action", "query")
+                            .queryParam("list", "geosearch")
+                            .queryParam("gsradius", raggioSicuro)
+                            .queryParam("gscoord", coordinate)
+                            .queryParam("gslimit", 10) // Prendiamone 10 tra cui l'LLM potrà scegliere
+                            .queryParam("format", "json")
+                            .build())
+                    .retrieve()
+                    .body(WikiGeoSearchResponse.class);
+
+            // Controlli anti-nullpointer
+            if (response == null || response.query() == null || response.query().geosearch() == null) {
+                return List.of(); // Restituisce lista vuota se non trova nulla
+            }
+
+            // Estraiamo solo i titoli delle pagine Wiki trovate nei dintorni
+            return response.query().geosearch().stream()
+                    .map(WikiGeoResult::title)
+                    .collect(Collectors.toList());
+
+        } catch (Exception e) {
+            System.err.println("Errore durante la GeoSearch di Wikipedia: " + e.getMessage());
+            return List.of(); // Non facciamo crashare nulla!
+        }
     }
 }
