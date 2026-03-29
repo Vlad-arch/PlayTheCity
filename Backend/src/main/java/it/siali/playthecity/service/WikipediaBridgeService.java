@@ -1,5 +1,6 @@
 package it.siali.playthecity.service;
 
+import it.siali.playthecity.dto.CandidatePoi;
 import it.siali.playthecity.dto.wikipedia.WikiGeoResult;
 import it.siali.playthecity.dto.wikipedia.WikiGeoSearchResponse;
 import it.siali.playthecity.dto.wikipedia.WikiSearchResponse;
@@ -117,6 +118,64 @@ public class WikipediaBridgeService {
         } catch (Exception e) {
             System.err.println("Errore durante la GeoSearch di Wikipedia: " + e.getMessage());
             return List.of(); // Non facciamo crashare nulla!
+        }
+    }
+
+    public List<CandidatePoi> cercaMonumentiViciniDettagliati(double lat, double lon, int raggioMetri, int num) {
+        int raggioSicuro = Math.min(raggioMetri, 10000);
+        String coordinate = lat + "|" + lon;
+
+        try {
+            // 1. Chiamata GeoSearch (ci dà i titoli e le coordinate base)
+            WikiGeoSearchResponse response = actionClient.get()
+                    .uri(uriBuilder -> uriBuilder
+                            .queryParam("action", "query")
+                            .queryParam("list", "geosearch")
+                            .queryParam("gsradius", raggioSicuro)
+                            .queryParam("gscoord", coordinate)
+                            .queryParam("gslimit", num)
+                            .queryParam("format", "json")
+                            .build())
+                    .retrieve()
+                    .body(WikiGeoSearchResponse.class);
+
+            if (response == null || response.query() == null || response.query().geosearch() == null) {
+                return List.of();
+            }
+
+            // 2. Per ogni risultato, arricchiamo con foto e descrizione tramite il RestClient (summary)
+            return response.query().geosearch().stream().map(geo -> {
+                try {
+                    // Sfruttiamo il summary API che abbiamo già usato in recuperaStoriaPerRAG
+                    WikiSummaryResponse summary = restClient.get()
+                            .uri("/page/summary/{titolo}", geo.title())
+                            .retrieve()
+                            .body(WikiSummaryResponse.class);
+
+                    String imgUrl = (summary != null && summary.thumbnail() != null)
+                            ? summary.thumbnail().source()
+                            : "https://via.placeholder.com/400x300?text=Monumento+Storico";
+
+                    String desc = (summary != null) ? summary.extract() : "Monumento storico vicino a te.";
+
+                    return new CandidatePoi(
+                            geo.title(),
+                            desc,
+                            imgUrl,
+                            geo.lat(), // Usiamo le lat/lon che arrivano dalla GeoSearch
+                            geo.lon(),
+                            "WIKIPEDIA",
+                            "Monumento/Storia"
+                    );
+                } catch (Exception e) {
+                    // Se il summary fallisce per un singolo monumento, creiamo un record base
+                    return new CandidatePoi(geo.title(), "Luogo storico", "", geo.lat(), geo.lon(), "WIKIPEDIA", "Storia");
+                }
+            }).collect(Collectors.toList());
+
+        } catch (Exception e) {
+            System.err.println("Errore GeoSearch Dettagliata: " + e.getMessage());
+            return List.of();
         }
     }
 }

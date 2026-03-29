@@ -34,7 +34,6 @@ public class FoursquareService {
         String coordinate = lat + "," + lon;
 
         try {
-            // Spring Boot mappa AUTOMATICAMENTE il JSON nel tuo Record FoursquareResponse!
             FoursquareResponse response = restClient.get()
                     .uri(uriBuilder -> uriBuilder
                             .path("/places/search")
@@ -42,31 +41,45 @@ public class FoursquareService {
                             .queryParam("radius", raggioMetri)
                             .queryParam("query", queryDalProfilo)
                             .queryParam("limit", 10)
-                            .queryParam("fields", "fsq_place_id,name,categories,latitude,longitude")
+                            // Assicuriamoci che i campi siano esattamente quelli del JSON Foursquare
+                            .queryParam("fields", "fsq_place_id,name,categories,latitude,longitude,description,photos")
                             .build())
                     .retrieve()
-                    .body(FoursquareResponse.class); // <-- LA MAGIA È QUI
+                    .body(FoursquareResponse.class);
 
             if (response == null || response.results() == null) {
                 return listaPoi;
             }
 
             for (FoursquareResult result : response.results()) {
+                // 1. Estrazione Categoria
                 String categoria = "Luogo di interesse";
                 if (result.categories() != null && !result.categories().isEmpty()) {
                     categoria = result.categories().get(0).name();
                 }
 
-                // Usiamo direttamente le variabili flat
-                double poiLat = result.latitude();
-                double poiLon = result.longitude();
+                // 2. Estrazione Descrizione (con fallback)
+                String desc = (result.description() != null && !result.description().isBlank())
+                        ? result.description()
+                        : "Scopri i segreti di questo luogo durante la tua avventura.";
 
+                // 3. Costruzione URL Foto (Foursquare usa prefix + size + suffix)
+                String imgUrl = "https://via.placeholder.com/400x300?text=Immagine+non+disponibile";
+                if (result.photos() != null && !result.photos().isEmpty()) {
+                    var photo = result.photos().get(0);
+                    // "original" o "600x400" sono dimensioni valide
+                    imgUrl = photo.prefix() + "original" + photo.suffix();
+                }
+
+                // 4. CREAZIONE RECORD (Ora con tutti i 7 parametri richiesti)
                 listaPoi.add(new FoursquarePoi(
-                        result.fsqPlaceId(), // Aggiornato il getter
-                        result.name(),
-                        categoria,
-                        poiLat,
-                        poiLon
+                        result.fsqPlaceId(),   // 1. id
+                        result.name(),         // 2. nome
+                        categoria,             // 3. categoria
+                        result.latitude(),     // 4. lat
+                        result.longitude(),    // 5. lon
+                        desc,                  // 6. descrizione
+                        imgUrl                 // 7. imageUrl
                 ));
             }
 
@@ -74,6 +87,7 @@ public class FoursquareService {
 
         } catch (Exception e) {
             System.err.println("Errore Foursquare: " + e.getMessage());
+            e.printStackTrace(); // Utile in fase di hackathon per vedere l'errore esatto
             return listaPoi;
         }
     }

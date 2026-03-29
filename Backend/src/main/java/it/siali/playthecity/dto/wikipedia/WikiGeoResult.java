@@ -5,5 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record WikiGeoResult(
         String title,
-        double dist // Distanza in metri, comoda se in futuro vuoi ordinarli!
+        double lat,  // Aggiungi questo
+        double lon,  // Aggiungi questo
+        double dist
 ) {}

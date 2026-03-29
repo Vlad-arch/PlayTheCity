@@ -5,5 +5,5 @@ import java.util.List;
 public record GeneratedItinerary(
         String adventureTitle,
         String welcomeMessage,
-        List<ItineraryWaypoint> waypoints // Le "tappe" del viaggio
+        List<SelectedWaypoint> waypoints // <-- Deve essere SelectedWaypoint, non ItineraryWaypoint
 ) {}
